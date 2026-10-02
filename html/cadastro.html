@@ -4,84 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro - ONG Esperança Solidária</title>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
 
-    <header>
-        <h1>ONG Esperança Solidária</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Início</a></li>
-                <li><a href="projetos.html">Projetos</a></li>
-                <li><a href="cadastro.html">Seja Voluntário</a></li>
+    <a href="#conteudo" class="pular-link">Pular para o conteúdo</a>
+
+    <header class="cabecalho">
+        <h1 class="cabecalho__logo"><a href="index.html">ONG Esperança Solidária</a></h1>
+
+        <!-- menu mobile: o checkbox abre e fecha -->
+        <input type="checkbox" id="menu-toggle" class="cabecalho__toggle">
+        <label for="menu-toggle" class="cabecalho__hamburguer" aria-label="Abrir menu de navegação">
+            <span></span>
+        </label>
+
+        <nav class="menu" aria-label="Navegação principal">
+            <ul class="menu__lista">
+                <li class="menu__item"><a href="index.html" class="menu__link">Início</a></li>
+                <li class="menu__item menu__item--submenu">
+                    <a href="projetos.html" class="menu__link">Projetos <span class="menu__seta" aria-hidden="true"></span></a>
+                    <!-- dropdown dos projetos -->
+                    <ul class="submenu">
+                        <li><a href="projetos.html#modal-educa" class="submenu__link">Educa para Todos</a></li>
+                        <li><a href="projetos.html#modal-marmita" class="submenu__link">Marmita do Bem</a></li>
+                        <li><a href="projetos.html#modal-verde" class="submenu__link">Verde Urbano</a></li>
+                        <li><a href="projetos.html#modal-saude" class="submenu__link">Saúde Solidária</a></li>
+                    </ul>
+                </li>
+                <li class="menu__item"><a href="cadastro.html" class="menu__link" aria-current="page">Seja Voluntário</a></li>
             </ul>
         </nav>
     </header>
 
-    <main>
-        <section>
-            <h2>Junte-se a Nós: Seja um Colaborador</h2>
-            <p>Preencha os campos abaixo para registrar seu interesse em fazer parte das nossas ações.</p>
+    <main id="conteudo" class="pagina-cadastro">
+        <section class="cadastro">
+            <h2 class="cadastro__titulo">Junte-se a Nós: Seja um Colaborador</h2>
+            <p class="cadastro__intro">Preencha os campos abaixo para registrar seu interesse em fazer parte das nossas ações.</p>
 
-            <form action="#" method="POST">
-                <fieldset>
-                    <legend>Dados Pessoais</legend>
+            <form class="form" action="#" method="POST">
+                <p class="alerta alerta--info">Seus dados serão usados apenas para entrarmos em contato sobre o voluntariado.</p>
 
-                    <p>
-                        <label for="nome">Nome Completo:*</label><br>
-                        <input type="text" id="nome" name="nome" required minlength="3" placeholder="Ex: Maria Silva">
-                    </p>
+                <fieldset class="form__grupo">
+                    <legend class="form__legenda">Dados Pessoais</legend>
 
-                    <p>
-                        <label for="email">E-mail:*</label><br>
-                        <input type="email" id="email" name="email" required placeholder="seueemail@exemplo.com">
-                    </p>
+                    <!-- input antes do label por causa do label flutuante -->
+                    <div class="form__campo">
+                        <input class="form__input" type="text" id="nome" name="nome" required minlength="3" placeholder=" " aria-describedby="nome-erro">
+                        <label class="form__rotulo" for="nome">Nome Completo:*</label>
+                        <span class="form__erro" id="nome-erro">Informe seu nome completo (mínimo 3 letras).</span>
+                    </div>
 
-                    <p>
-                        <label for="cpf">CPF:*</label><br>
-                        <input type="text" id="cpf" name="cpf" required pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" placeholder="000.000.000-00" title="Digite o CPF no formato: 000.000.000-00" maxlength="14">
-                    </p>
+                    <div class="form__campo">
+                        <input class="form__input" type="email" id="email" name="email" required placeholder=" " aria-describedby="email-erro">
+                        <label class="form__rotulo" for="email">E-mail:*</label>
+                        <span class="form__erro" id="email-erro">Digite um e-mail válido, ex: maria@exemplo.com</span>
+                    </div>
 
-                    <p>
-                        <label for="telefone">Telefone / WhatsApp:*</label><br>
-                        <input type="tel" id="telefone" name="telefone" required pattern="\(\d{2}\) \d{4,5}-\d{4}" placeholder="(00) 00000-0000" title="Digite o telefone no formato: (00) 00000-0000" maxlength="15">
-                    </p>
+                    <!-- cpf, telefone e cep aceitam com ou sem pontuação -->
+                    <div class="form__campo">
+                        <input class="form__input" type="text" id="cpf" name="cpf" required pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2}" maxlength="14" placeholder=" " aria-describedby="cpf-erro">
+                        <label class="form__rotulo" for="cpf">CPF:*</label>
+                        <span class="form__erro" id="cpf-erro">Digite os 11 números do CPF, com ou sem pontos</span>
+                    </div>
 
-                    <p>
-                        <label for="cep">CEP:*</label><br>
-                        <input type="text" id="cep" name="cep" required pattern="\d{5}-\d{3}" placeholder="00000-000" title="Digite o CEP no formato: 00000-000" maxlength="9">
-                    </p>
+                    <div class="form__campo">
+                        <input class="form__input" type="tel" id="telefone" name="telefone" required pattern="\(?\d{2}\)?\s?\d{4,5}-?\d{4}" maxlength="15" placeholder=" " aria-describedby="telefone-erro">
+                        <label class="form__rotulo" for="telefone">Telefone / WhatsApp:*</label>
+                        <span class="form__erro" id="telefone-erro">Digite DDD + número, ex: 47991018870 ou (47) 99101-8870</span>
+                    </div>
+
+                    <div class="form__campo">
+                        <input class="form__input" type="text" id="cep" name="cep" required pattern="\d{5}-?\d{3}" maxlength="9" placeholder=" " aria-describedby="cep-erro">
+                        <label class="form__rotulo" for="cep">CEP:*</label>
+                        <span class="form__erro" id="cep-erro">Digite os 8 números do CEP, com ou sem hífen</span>
+                    </div>
                 </fieldset>
 
-                <fieldset>
-                    <legend>Interesse de Atuação</legend>
+                <fieldset class="form__grupo">
+                    <legend class="form__legenda">Interesse de Atuação</legend>
 
-                    <p>
-                        <label for="projeto">Projeto de Interesse:*</label><br>
-                        <select id="projeto" name="projeto" required>
-                            <option value="">-- Selecione um projeto --</option>
-                            <option value="educa-mais">Educa Mais</option>
-                            <option value="marmita-solidaria">Marmita Solidária</option>
-                            <option value="horta-comunitaria">Horta Comunitária</option>
+                    <!-- select: o label fica sempre em cima -->
+                    <div class="form__campo form__campo--select">
+                        <select class="form__input" id="projeto" name="projeto" required aria-describedby="projeto-erro">
+                            <option value="">Selecione um projeto</option>
+                            <option value="educa-para-todos">Educa para Todos</option>
+                            <option value="marmita-do-bem">Marmita do Bem</option>
+                            <option value="verde-urbano">Verde Urbano</option>
+                            <option value="saude-solidaria">Saúde Solidária</option>
                             <option value="apoio-administrativo">Apoio Administrativo / Logística</option>
                         </select>
-                    </p>
+                        <label class="form__rotulo" for="projeto">Projeto de Interesse:*</label>
+                        <span class="form__erro" id="projeto-erro">Escolha um projeto.</span>
+                    </div>
 
-                    <p>
-                        <label for="mensagem">Por que gostaria de ser voluntário?</label><br>
-                        <textarea id="mensagem" name="mensagem" rows="5" cols="30" placeholder="Conte um pouco sobre suas motivações e experiências..."></textarea>
-                    </p>
+                    <div class="form__campo form__campo--texto">
+                        <textarea class="form__input" id="mensagem" name="mensagem" rows="5" placeholder=" "></textarea>
+                        <label class="form__rotulo" for="mensagem">Por que gostaria de ser voluntário?</label>
+                    </div>
                 </fieldset>
 
-                <p>
-                    <button type="submit">Enviar Cadastro</button>
-                    <button type="reset">Limpar Campos</button>
-                </p>
+                <!-- mensagens que aparecem conforme a validação -->
+                <div class="form__status" aria-live="polite">
+                    <p class="alerta alerta--erro form__status--erro">Corrija os campos destacados em vermelho.</p>
+                    <p class="alerta alerta--sucesso form__status--ok">Tudo certo! Clique em enviar.</p>
+                </div>
+
+                <div class="form__acoes">
+                    <button type="submit" class="btn btn--registrar">Enviar Cadastro</button>
+                    <button type="reset" class="btn btn--limpar">Limpar Campos</button>
+                </div>
             </form>
         </section>
     </main>
 
-    <footer>
+    <!-- rodapé -->
+    <footer class="rodape">
         <p>&copy; 2026 ONG Esperança Solidária. Todos os direitos reservados.</p>
     </footer>
 

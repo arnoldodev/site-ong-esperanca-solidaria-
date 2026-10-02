@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia de Componentes - ONG Esperança Solidária</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* só a organização da página do guia */
+        .guia { max-width: 900px; margin: 0 auto; padding: var(--esp-6) var(--esp-4) var(--esp-8); }
+        .guia__titulo { font-size: var(--fs-xl); font-weight: var(--peso-medio); color: var(--cor-primaria-900); }
+        .guia__intro { margin-top: var(--esp-1); color: var(--cor-texto-suave); }
+        .guia__secao { margin-top: var(--esp-6); padding: var(--esp-5); border-radius: var(--raio-md); background: var(--cor-superficie); box-shadow: var(--sombra-card); }
+        .guia__secao h2 { margin-bottom: var(--esp-1); font-size: var(--fs-lg); font-weight: var(--peso-medio); }
+        .guia__secao > p { margin-bottom: var(--esp-4); font-size: var(--fs-sm); color: var(--cor-texto-suave); }
+        .guia__secao code { padding: 1px 6px; border-radius: 4px; background: #eef2f7; font-size: 0.8rem; }
+        .guia__linha { display: flex; flex-wrap: wrap; align-items: center; gap: var(--esp-3); }
+        .guia__pilha { display: flex; flex-direction: column; gap: var(--esp-3); }
+        .guia__escuro { padding: var(--esp-5); border-radius: var(--raio-md); background: var(--degrade-cadastro); }
+        .guia__modal { display: grid; place-items: center; padding: var(--esp-6) var(--esp-4); border-radius: var(--raio-md); background: rgba(5, 10, 18, 0.6); }
+        .guia .toast-area { position: static; width: min(360px, 100%); }
+        .guia .modal__caixa { transform: none; }
+    </style>
+</head>
+<body>
+    <main class="guia">
+        <h1 class="guia__titulo">Guia de Componentes</h1>
+        <p class="guia__intro">Componentes de feedback da plataforma ONG Esperança Solidária, prontos para reutilização.</p>
+
+        <section class="guia__secao" id="badges">
+            <h2>Badges (categorias)</h2>
+            <p>Classe base <code>.badge</code> + modificador da categoria.</p>
+            <div class="guia__linha">
+                <span class="badge badge--educacao">Educação</span>
+                <span class="badge badge--alimentacao">Alimentação</span>
+                <span class="badge badge--ambiente">Meio ambiente</span>
+                <span class="badge badge--saude">Saúde</span>
+            </div>
+        </section>
+
+        <section class="guia__secao" id="alertas">
+            <h2>Alertas</h2>
+            <p>Classe base <code>.alerta</code> + <code>--sucesso</code>, <code>--erro</code>, <code>--aviso</code> ou <code>--info</code>.</p>
+            <div class="guia__pilha">
+                <p class="alerta alerta--sucesso"><span><strong class="alerta__titulo">Cadastro enviado!</strong>Obrigado por se voluntariar. Entraremos em contato em breve.</span></p>
+                <p class="alerta alerta--erro"><span><strong class="alerta__titulo">Não foi possível enviar.</strong>Corrija os campos destacados em vermelho.</span></p>
+                <p class="alerta alerta--aviso"><span><strong class="alerta__titulo">Vagas limitadas.</strong>O projeto Marmita do Bem está com poucas vagas este mês.</span></p>
+                <p class="alerta alerta--info"><span><strong class="alerta__titulo">Privacidade.</strong>Seus dados serão usados apenas para contato sobre o voluntariado.</span></p>
+            </div>
+        </section>
+
+        <section class="guia__secao" id="formulario">
+            <h2>Alertas no formulário</h2>
+            <p>Os mesmos alertas aparecem dentro do formulário de cadastro, sobre o fundo escuro.</p>
+            <div class="guia__escuro guia__pilha">
+                <p class="alerta alerta--info">Seus dados serão usados apenas para entrarmos em contato sobre o voluntariado.</p>
+                <p class="alerta alerta--erro">Corrija os campos destacados em vermelho.</p>
+                <p class="alerta alerta--sucesso">Tudo certo! Clique em registrar.</p>
+            </div>
+        </section>
+
+        <section class="guia__secao" id="toasts">
+            <h2>Toasts (notificações)</h2>
+            <p>Ficam em <code>.toast-area</code>, fixa no canto inferior direito, e entram com animação. Aqui aparecem estáticos para visualização.</p>
+            <div class="toast-area">
+                <div class="toast toast--sucesso" role="status">
+                    <span class="toast__icone" aria-hidden="true"></span>
+                    <div class="toast__conteudo"><strong class="toast__titulo">Cadastro realizado</strong><span class="toast__texto">Bem-vindo(a) à equipe de voluntários!</span></div>
+                    <button class="toast__fechar" aria-label="Fechar notificação">&times;</button>
+                </div>
+                <div class="toast toast--erro" role="alert">
+                    <span class="toast__icone" aria-hidden="true"></span>
+                    <div class="toast__conteudo"><strong class="toast__titulo">Erro de conexão</strong><span class="toast__texto">Tente enviar novamente em instantes.</span></div>
+                    <button class="toast__fechar" aria-label="Fechar notificação">&times;</button>
+                </div>
+                <div class="toast toast--aviso" role="status">
+                    <span class="toast__icone" aria-hidden="true"></span>
+                    <div class="toast__conteudo"><strong class="toast__titulo">Campos pendentes</strong><span class="toast__texto">Preencha CPF e CEP para continuar.</span></div>
+                    <button class="toast__fechar" aria-label="Fechar notificação">&times;</button>
+                </div>
+                <div class="toast toast--info" role="status">
+                    <span class="toast__icone" aria-hidden="true"></span>
+                    <div class="toast__conteudo"><strong class="toast__titulo">Novo projeto</strong><span class="toast__texto">Conheça o Saúde Solidária.</span></div>
+                    <button class="toast__fechar" aria-label="Fechar notificação">&times;</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="guia__secao" id="modal">
+            <h2>Modal</h2>
+            <p>Abre via <code>:target</code> com <code>role="dialog"</code> e <code>aria-labelledby</code>. Fecha pelo "×" ou clicando no fundo escurecido.</p>
+            <div class="guia__modal">
+                <div class="modal__caixa" role="dialog" aria-labelledby="guia-modal-titulo">
+                    <a href="#modal" class="modal__fechar" aria-label="Fechar">&times;</a>
+                    <span class="badge badge--saude">Saúde</span>
+                    <h3 id="guia-modal-titulo" class="modal__titulo">Saúde Solidária</h3>
+                    <p class="modal__texto">Consultas médicas básicas e apoio psicológico gratuito para famílias em vulnerabilidade.</p>
+                    <a href="index.html#cadastro" class="btn btn--primario">Quero participar</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="guia__secao" id="botoes">
+            <h2>Botões</h2>
+            <p>Classe base <code>.btn</code> + variação. O último exemplo está no estado <code>:disabled</code>.</p>
+            <div class="guia__linha">
+                <a href="#botoes" class="btn btn--contorno">Seja Voluntário</a>
+                <a href="#botoes" class="btn btn--primario">Quero participar</a>
+                <button class="btn btn--registrar">Registrar</button>
+                <button class="btn btn--primario" disabled>Desabilitado</button>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
