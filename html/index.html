@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ONG Esperança Solidária - Início</title>
+    <title>ONG Esperança Solidária</title>
     <link rel="stylesheet" href="../css/style.css">
+    <!-- type="module" permite separar o JS em arquivos com import/export -->
+    <script type="module" src="../js/main.js"></script>
 </head>
 <body>
 
     <a href="#conteudo" class="pular-link">Pular para o conteúdo</a>
 
+    <!-- cabeçalho fixo: só o <main> troca quando muda de página -->
     <header class="cabecalho">
-        <h1 class="cabecalho__logo"><a href="#sobre">ONG Esperança Solidária</a></h1>
+        <h1 class="cabecalho__logo"><a href="#/">ONG Esperança Solidária</a></h1>
 
         <!-- menu mobile: o checkbox abre e fecha -->
         <input type="checkbox" id="menu-toggle" class="cabecalho__toggle">
@@ -21,208 +24,39 @@
 
         <nav class="menu" aria-label="Navegação principal">
             <ul class="menu__lista">
-                <li class="menu__item"><a href="index.html" class="menu__link" aria-current="page">Início</a></li>
+                <li class="menu__item"><a href="#/" class="menu__link" data-rota="/">Início</a></li>
                 <li class="menu__item menu__item--submenu">
-                    <a href="projetos.html" class="menu__link">Projetos <span class="menu__seta" aria-hidden="true"></span></a>
-                    <!-- dropdown dos projetos -->
-                    <ul class="submenu">
-                        <li><a href="projetos.html#modal-educa" class="submenu__link">Educa para Todos</a></li>
-                        <li><a href="projetos.html#modal-marmita" class="submenu__link">Marmita do Bem</a></li>
-                        <li><a href="projetos.html#modal-verde" class="submenu__link">Verde Urbano</a></li>
-                        <li><a href="projetos.html#modal-saude" class="submenu__link">Saúde Solidária</a></li>
-                    </ul>
+                    <a href="#/projetos" class="menu__link" data-rota="/projetos">Projetos <span class="menu__seta" aria-hidden="true"></span></a>
+                    <!-- o JS preenche com os projetos de js/dados/projetos.js -->
+                    <ul class="submenu"></ul>
                 </li>
-                <li class="menu__item"><a href="cadastro.html" class="menu__link">Seja Voluntário</a></li>
+                <li class="menu__item"><a href="#/cadastro" class="menu__link" data-rota="/cadastro">Seja Voluntário</a></li>
+                <li class="menu__item"><a href="#/voluntarios" class="menu__link" data-rota="/voluntarios">Voluntários</a></li>
             </ul>
         </nav>
     </header>
 
-    <main id="conteudo">
-
-        <!-- sobre -->
-        <section id="sobre" class="sobre">
-            <h2 class="etiqueta">Sobre nós</h2>
-
-            <div class="sobre__texto">
-                <p class="sobre__descricao">A ONG Esperança Solidária é uma organização sem fins lucrativos dedicada a promover a inclusão social e garantir direitos fundamentais para comunidades em situação de vulnerabilidade.</p>
-                <a href="#cadastro" class="btn btn--contorno">Seja Voluntário</a>
-            </div>
-
-            <figure class="sobre__figura">
-                <img src="../assets/voluntarios-acao.jpg" alt="Voluntária da ONG sorrindo abraçada a três jovens de bonés azuis em frente à placa de um parque.">
-            </figure>
-        </section>
-
-        <!-- missão, visão e valores -->
-        <section id="missao-visao" class="pilares">
-            <h2 class="visualmente-oculto">Nossa Missão, Visão e Valores</h2>
-            <article class="pilar">
-                <h3 class="pilar__titulo">Missão</h3>
-                <p class="pilar__texto">Transformar vidas por meio da educação, assistência social e oportunidades de desenvolvimento comunitário.</p>
-            </article>
-            <article class="pilar">
-                <h3 class="pilar__titulo">Visão</h3>
-                <p class="pilar__texto">Ser referência na construção de uma sociedade justa, onde todas as famílias tenham acesso a oportunidades dignas.</p>
-            </article>
-            <article class="pilar">
-                <h3 class="pilar__titulo">Valores</h3>
-                <ul class="pilar__valores">
-                    <li>Empatia</li>
-                    <li>Solidariedade</li>
-                    <li>Transparência</li>
-                    <li>Compromisso Social</li>
-                </ul>
-            </article>
-        </section>
-
-        <!-- números -->
-        <section id="impacto" class="impacto">
-            <h2 class="visualmente-oculto">Impacto em Números</h2>
-            <ul class="impacto__lista">
-                <li class="impacto__item"><strong class="impacto__numero">+1000</strong><span class="impacto__rotulo">Famílias atendidas</span></li>
-                <li class="impacto__item"><strong class="impacto__numero">+7000</strong><span class="impacto__rotulo">Refeições distribuídas</span></li>
-                <li class="impacto__item"><strong class="impacto__numero">120</strong><span class="impacto__rotulo">Voluntários Ativos</span></li>
-                <li class="impacto__item"><strong class="impacto__numero">+R$50K</strong><span class="impacto__rotulo">Doações Arrecadadas</span></li>
-            </ul>
-        </section>
-
-        <!-- projetos -->
-        <section id="projetos" class="projetos">
-            <img class="projetos__imagem" src="../assets/voluntarios2.jpg" alt="Equipe de voluntários com coletes azuis e máscaras reunida em uma sala.">
-
-            <div class="projetos__conteudo">
-                <h2 class="projetos__titulo">Nossas Iniciativas</h2>
-                <p class="projetos__subtitulo">Confira abaixo os nossos projetos</p>
-
-                <div class="projetos__grade">
-                    <article class="card">
-                        <span class="badge badge--educacao">Educação</span>
-                        <h3 class="card__titulo">Educa para Todos</h3>
-                        <p class="card__texto">Aulas de reforço escolar e informática básica para crianças do ensino público.</p>
-                        <a href="#modal-educa" class="card__link">Saiba mais</a>
-                    </article>
-                    <article class="card">
-                        <span class="badge badge--alimentacao">Alimentação</span>
-                        <h3 class="card__titulo">Marmita do Bem</h3>
-                        <p class="card__texto">Distribuição diária de refeições nutritivas para pessoas em situação de rua.</p>
-                        <a href="#modal-marmita" class="card__link">Saiba mais</a>
-                    </article>
-                    <article class="card">
-                        <span class="badge badge--ambiente">Meio ambiente</span>
-                        <h3 class="card__titulo">Verde Urbano</h3>
-                        <p class="card__texto">Criação de hortas comunitárias para segurança alimentar local.</p>
-                        <a href="#modal-verde" class="card__link">Saiba mais</a>
-                    </article>
-                    <article class="card">
-                        <span class="badge badge--saude">Saúde</span>
-                        <h3 class="card__titulo">Saúde Solidária</h3>
-                        <p class="card__texto">Consultas médicas básicas e apoio psicológico gratuito para famílias em vulnerabilidade.</p>
-                        <a href="#modal-saude" class="card__link">Saiba mais</a>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <!-- modais (abrem pelo #id no link) -->
-        <div class="modal" id="modal-educa" role="dialog" aria-labelledby="modal-educa-titulo">
-            <a href="#projetos" class="modal__fundo" aria-hidden="true" tabindex="-1"></a>
-            <div class="modal__caixa">
-                <a href="#projetos" class="modal__fechar" aria-label="Fechar">&times;</a>
-                <span class="badge badge--educacao">Educação</span>
-                <h3 id="modal-educa-titulo" class="modal__titulo">Educa para Todos</h3>
-                <p class="modal__texto">Aulas de reforço escolar e informática básica para crianças do ensino público, de segunda a sexta, no contraturno escolar. Voluntários atuam como monitores de português, matemática e informática.</p>
-                <a href="#cadastro" class="btn btn--primario">Quero participar</a>
-            </div>
-        </div>
-
-        <div class="modal" id="modal-marmita" role="dialog" aria-labelledby="modal-marmita-titulo">
-            <a href="#projetos" class="modal__fundo" aria-hidden="true" tabindex="-1"></a>
-            <div class="modal__caixa">
-                <a href="#projetos" class="modal__fechar" aria-label="Fechar">&times;</a>
-                <span class="badge badge--alimentacao">Alimentação</span>
-                <h3 id="modal-marmita-titulo" class="modal__titulo">Marmita do Bem</h3>
-                <p class="modal__texto">Distribuição diária de refeições nutritivas para pessoas em situação de rua. Voluntários ajudam no preparo, embalagem e entrega das marmitas.</p>
-                <a href="#cadastro" class="btn btn--primario">Quero participar</a>
-            </div>
-        </div>
-
-        <div class="modal" id="modal-verde" role="dialog" aria-labelledby="modal-verde-titulo">
-            <a href="#projetos" class="modal__fundo" aria-hidden="true" tabindex="-1"></a>
-            <div class="modal__caixa">
-                <a href="#projetos" class="modal__fechar" aria-label="Fechar">&times;</a>
-                <span class="badge badge--ambiente">Meio ambiente</span>
-                <h3 id="modal-verde-titulo" class="modal__titulo">Verde Urbano</h3>
-                <p class="modal__texto">Criação de hortas comunitárias para segurança alimentar local. Voluntários participam do plantio, manutenção e oficinas de cultivo com os moradores.</p>
-                <a href="#cadastro" class="btn btn--primario">Quero participar</a>
-            </div>
-        </div>
-
-        <div class="modal" id="modal-saude" role="dialog" aria-labelledby="modal-saude-titulo">
-            <a href="#projetos" class="modal__fundo" aria-hidden="true" tabindex="-1"></a>
-            <div class="modal__caixa">
-                <a href="#projetos" class="modal__fechar" aria-label="Fechar">&times;</a>
-                <span class="badge badge--saude">Saúde</span>
-                <h3 id="modal-saude-titulo" class="modal__titulo">Saúde Solidária</h3>
-                <p class="modal__texto">Consultas médicas básicas e apoio psicológico gratuito para famílias em vulnerabilidade. Voluntários da área da saúde atendem em mutirões, e outros voluntários ajudam na recepção e no agendamento.</p>
-                <a href="#cadastro" class="btn btn--primario">Quero participar</a>
-            </div>
-        </div>
-
-        <!-- cadastro de voluntário -->
-        <section id="cadastro" class="cadastro">
-            <h2 class="cadastro__titulo">Seja Voluntário</h2>
-
-            <form class="form" action="#" method="POST">
-                <p class="alerta alerta--info">Seus dados serão usados apenas para entrarmos em contato sobre o voluntariado.</p>
-
-                <!-- input antes do label por causa do label flutuante -->
-                <div class="form__campo">
-                    <input class="form__input" type="text" id="nome" name="nome" required minlength="3" placeholder=" " aria-describedby="nome-erro">
-                    <label class="form__rotulo" for="nome">Nome Completo:</label>
-                    <span class="form__erro" id="nome-erro">Informe seu nome completo (mínimo 3 letras).</span>
-                </div>
-
-                <div class="form__campo">
-                    <input class="form__input" type="email" id="email" name="email" required placeholder=" " aria-describedby="email-erro">
-                    <label class="form__rotulo" for="email">E-mail</label>
-                    <span class="form__erro" id="email-erro">Digite um e-mail válido, ex: maria@exemplo.com</span>
-                </div>
-
-                <!-- cpf, telefone e cep aceitam com ou sem pontuação -->
-                <div class="form__campo">
-                    <input class="form__input" type="text" id="cpf" name="cpf" required pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2}" maxlength="14" placeholder=" " aria-describedby="cpf-erro">
-                    <label class="form__rotulo" for="cpf">CPF:</label>
-                    <span class="form__erro" id="cpf-erro">Digite os 11 números do CPF, com ou sem pontos</span>
-                </div>
-
-                <div class="form__campo">
-                    <input class="form__input" type="tel" id="telefone" name="telefone" required pattern="\(?\d{2}\)?\s?\d{4,5}-?\d{4}" maxlength="15" placeholder=" " aria-describedby="telefone-erro">
-                    <label class="form__rotulo" for="telefone">Telefone / WhatsApp:</label>
-                    <span class="form__erro" id="telefone-erro">Digite DDD + número, ex: 47991018870 ou (47) 99101-8870</span>
-                </div>
-
-                <div class="form__campo">
-                    <input class="form__input" type="text" id="cep" name="cep" required pattern="\d{5}-?\d{3}" maxlength="9" placeholder=" " aria-describedby="cep-erro">
-                    <label class="form__rotulo" for="cep">CEP</label>
-                    <span class="form__erro" id="cep-erro">Digite os 8 números do CEP, com ou sem hífen</span>
-                </div>
-
-                <div class="form__campo form__campo--texto">
-                    <textarea class="form__input" id="mensagem" name="mensagem" rows="5" placeholder=" "></textarea>
-                    <label class="form__rotulo" for="mensagem">Por que gostaria de ser voluntário?</label>
-                </div>
-
-                <!-- mensagens que aparecem conforme a validação -->
-                <div class="form__status" aria-live="polite">
-                    <p class="alerta alerta--erro form__status--erro">Corrija os campos destacados em vermelho.</p>
-                    <p class="alerta alerta--sucesso form__status--ok">Tudo certo! Clique em registrar.</p>
-                </div>
-
-                <button type="submit" class="btn btn--registrar">Registrar</button>
-            </form>
-        </section>
-
+    <!-- aqui o roteador desenha cada página (js/views/) -->
+    <main id="conteudo" tabindex="-1">
+        <p class="aviso-carregando">
+            Carregando…<br>
+            Se esta mensagem não sumir, abra o site pelo <strong>Live Server</strong> do VS Code:
+            o JavaScript usa módulos e o navegador bloqueia módulos abertos direto do arquivo.
+        </p>
     </main>
+
+    <noscript>
+        <p class="aviso-carregando">Este site precisa do JavaScript ativado.</p>
+    </noscript>
+
+    <!-- modal único, o conteúdo muda conforme quem abriu -->
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo" aria-hidden="true">
+        <div class="modal__fundo" data-fechar-modal></div>
+        <div class="modal__caixa" tabindex="-1">
+            <div class="modal__corpo"></div>
+            <button type="button" class="modal__fechar" aria-label="Fechar" data-fechar-modal>&times;</button>
+        </div>
+    </div>
 
     <!-- rodapé -->
     <footer class="rodape">

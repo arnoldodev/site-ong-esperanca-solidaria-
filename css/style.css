@@ -1,22 +1,3 @@
-/* ONG Esperança Solidária - style.css
-   organizado do mais geral pro mais específico (ITCSS)
-   classes no padrão BEM: bloco__elemento--modificador
-
-   1. variáveis
-   2. reset
-   3. base
-   4. utilitários
-   5. componentes
-   6. cabeçalho e menu
-   7. grid 12 colunas
-   8. seções
-   9. modal
-   10. formulário
-   11. rodapé
-   12. responsivo
-   13. movimento reduzido
-*/
-
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
 
 
@@ -412,7 +393,7 @@ a {
     font-weight: var(--peso-forte);
 }
 
-/* toasts: notificação no canto, o back-end joga dentro da .toast-area */
+/* toasts: notificação no canto, o JS (js/componentes/toast.js) cria a .toast-area e joga os toasts dentro */
 .toast-area {
     position: fixed;
     right: var(--esp-5);
@@ -988,7 +969,7 @@ a {
 
 
 /* 9. modal
-   abre quando a url fica com #modal-... (:target) */
+   abre quando o JS coloca a classe .modal--aberto (js/componentes/modal.js) */
 .modal {
     position: fixed;
     inset: 0;
@@ -1001,9 +982,11 @@ a {
     transition: opacity var(--transicao), visibility var(--transicao);
 }
 
-.modal:target {
+.modal--aberto {
     opacity: 1;
     visibility: visible;
+    /* visibility troca na hora ao abrir, senão o JS não consegue focar dentro do modal */
+    transition: opacity var(--transicao), visibility 0s;
 }
 
 /* fundo escuro, clicou fora fecha */
@@ -1030,7 +1013,7 @@ a {
     transition: transform var(--transicao);
 }
 
-.modal:target .modal__caixa {
+.modal--aberto .modal__caixa {
     transform: none;
 }
 
@@ -1129,8 +1112,8 @@ a {
 
 /* select com setinha própria */
 .form__campo--select .form__input,
-.form__campo--select .form__input:user-valid,
-.form__campo--select .form__input:user-invalid {
+.form__campo--select .form__input.campo--valido,
+.form__campo--select .form__input.campo--invalido {
     appearance: none;
     cursor: pointer;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%230a3a6b' stroke-width='2'/%3E%3C/svg%3E");
@@ -1172,7 +1155,7 @@ a {
 /* label dentro do campo, sobe quando foca ou tem texto */
 .form__rotulo {
     position: absolute;
-    top: 50%;
+    top: 20px; /* meio do input (fixo, pra não descer quando aparece a mensagem de erro embaixo) */
     left: 56px;
     font-size: var(--fs-xs);
     color: #13263a;
@@ -1200,19 +1183,20 @@ a {
     background-color: var(--cor-campo-foco);
 }
 
-/* :user-valid / :user-invalid só marcam depois que a pessoa mexeu no campo */
-.form__input:user-valid {
+/* .campo--valido / .campo--invalido são colocadas pelo JS (js/componentes/formulario.js)
+   só depois que a pessoa sai do campo ou tenta enviar */
+.form__input.campo--valido {
     border-color: var(--cor-sucesso);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231f9d55' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E");
 }
 
 /* textarea é opcional, não precisa de check */
-.form__campo--texto .form__input:user-valid {
+.form__campo--texto .form__input.campo--valido {
     border-color: transparent;
     background-image: none;
 }
 
-.form__input:user-invalid {
+.form__input.campo--invalido {
     border-color: var(--cor-erro);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c62828' stroke-width='2.5' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 7v6M12 17h.01'/%3E%3C/svg%3E");
 }
@@ -1224,7 +1208,7 @@ a {
     color: var(--cor-erro);
 }
 
-.form__input:user-invalid ~ .form__erro {
+.form__input.campo--invalido ~ .form__erro {
     display: block;
 }
 
@@ -1233,8 +1217,7 @@ a {
     display: none;
 }
 
-.form:has(.form__input:user-invalid) .form__status--erro,
-.form:valid .form__status--ok {
+.form__status > .alerta--visivel {
     display: flex;
 }
 
@@ -1246,6 +1229,369 @@ a {
     background: var(--degrade-rodape);
     color: var(--cor-branco);
     font-size: var(--fs-xs);
+    text-align: center;
+}
+
+
+/* 11.1 JavaScript
+   estados e telas que só existem por causa do JS (SPA, modal, toasts, voluntários) */
+
+/* área onde o roteador desenha as páginas */
+#conteudo {
+    min-height: 60vh;
+}
+
+#conteudo:focus {
+    outline: none;
+}
+
+.app--entrando {
+    animation: pagina-entrada 0.35s ease;
+}
+
+@keyframes pagina-entrada {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.aviso-carregando {
+    max-width: 560px;
+    margin: var(--esp-8) auto;
+    padding: 0 var(--esp-4);
+    color: var(--cor-texto-suave);
+    text-align: center;
+}
+
+/* trava a rolagem do fundo com o modal aberto */
+.sem-rolagem {
+    overflow: hidden;
+}
+
+/* modal: o corpo some do layout e os filhos viram itens do flex da caixa */
+.modal__corpo {
+    display: contents;
+}
+
+.modal__caixa:focus {
+    outline: none;
+}
+
+button.modal__fechar {
+    border: none;
+    background: none;
+    font: inherit;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal__info {
+    font-size: var(--fs-sm);
+    font-weight: var(--peso-medio);
+    color: var(--cor-primaria-700);
+}
+
+.modal__acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--esp-3);
+    margin-top: var(--esp-2);
+}
+
+/* botões extras (confirmação de remover) */
+.btn--perigo,
+.btn--neutro {
+    padding: var(--esp-2) var(--esp-5);
+    border-radius: var(--raio-pilula);
+}
+
+.btn--perigo {
+    background: var(--alerta-erro-borda);
+    color: var(--cor-branco);
+}
+
+.btn--perigo:hover:not(:disabled) {
+    background: var(--alerta-erro-txt);
+}
+
+.btn--neutro {
+    border-color: var(--cor-linha);
+    background: var(--cor-superficie);
+}
+
+.btn--neutro:hover:not(:disabled) {
+    border-color: var(--cor-primaria-900);
+}
+
+/* botão enquanto "envia" */
+.btn--carregando {
+    cursor: progress;
+}
+
+.btn--carregando::before {
+    content: "";
+    width: 14px;
+    height: 14px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: girar 0.7s linear infinite;
+}
+
+@keyframes girar {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* toast saindo */
+.toast--saindo {
+    animation: toast-saida 0.3s ease forwards;
+}
+
+@keyframes toast-saida {
+    to {
+        opacity: 0;
+        transform: translateX(24px);
+    }
+}
+
+/* formulário: dica do CEP e contador da mensagem */
+.form__dica,
+.form__contador {
+    display: block;
+    margin: var(--esp-1) 0 0 24px;
+    font-size: var(--fs-xs);
+    color: #9fc3e2;
+}
+
+.form__contador {
+    margin-right: 24px;
+    text-align: right;
+}
+
+.form__contador--limite {
+    color: var(--cor-erro);
+}
+
+.form__dica:empty {
+    display: none;
+}
+
+.cadastro__sucesso {
+    display: flex;
+    flex-direction: column;
+    gap: var(--esp-5);
+}
+
+.cadastro__sucesso:focus {
+    outline: none;
+}
+
+/* filtro de projetos */
+.filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--esp-2);
+    margin-top: var(--esp-4);
+}
+
+.filtro {
+    padding: var(--esp-1) var(--esp-4);
+    border: 1px solid var(--cor-linha);
+    border-radius: var(--raio-pilula);
+    background: var(--cor-superficie);
+    color: var(--cor-texto-suave);
+    font: inherit;
+    font-size: var(--fs-sm);
+    cursor: pointer;
+    transition: background var(--transicao), color var(--transicao), border-color var(--transicao);
+}
+
+.filtro:hover {
+    border-color: var(--cor-primaria-700);
+    color: var(--cor-primaria-700);
+}
+
+.filtro[aria-pressed="true"] {
+    border-color: var(--cor-primaria-900);
+    background: var(--cor-primaria-900);
+    color: var(--cor-branco);
+}
+
+.filtros__resultado {
+    margin: var(--esp-2) 0 var(--esp-3);
+    font-size: var(--fs-xs);
+    color: var(--cor-texto-suave);
+}
+
+/* o display:flex do card venceria o atributo hidden */
+.card[hidden] {
+    display: none;
+}
+
+.badge--neutro {
+    background: #e6ebf0;
+    color: var(--cor-texto-suave);
+}
+
+/* página de voluntários (e 404) */
+.painel {
+    padding: var(--esp-8) var(--gutter) var(--esp-6);
+}
+
+.painel--centro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--esp-3);
+    text-align: center;
+}
+
+.painel__titulo {
+    font-size: var(--fs-xl);
+    font-weight: var(--peso-medio);
+    color: var(--cor-primaria-900);
+}
+
+.painel__subtitulo {
+    color: var(--cor-texto-suave);
+}
+
+.painel__filtros {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--esp-4);
+    margin-top: var(--esp-5);
+}
+
+.painel__campo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--esp-1);
+    font-size: var(--fs-xs);
+    font-weight: var(--peso-medio);
+    color: var(--cor-texto-suave);
+}
+
+.painel__campo input,
+.painel__campo select {
+    padding: var(--esp-2) var(--esp-4);
+    border: 1px solid var(--cor-linha);
+    border-radius: var(--raio-pilula);
+    background: var(--cor-superficie);
+    color: var(--cor-texto);
+    font: inherit;
+    font-size: var(--fs-sm);
+}
+
+.painel__total {
+    margin: var(--esp-4) 0 var(--esp-3);
+    font-size: var(--fs-sm);
+    color: var(--cor-texto-suave);
+}
+
+.painel__lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+    gap: var(--esp-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.voluntario {
+    display: flex;
+    flex-direction: column;
+    gap: var(--esp-3);
+    padding: var(--esp-4) var(--esp-5);
+    border-radius: var(--raio-md);
+    background: var(--cor-superficie);
+    box-shadow: var(--sombra-card);
+}
+
+.voluntario__topo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--esp-2);
+}
+
+.voluntario__nome {
+    font-size: var(--fs-md);
+    font-weight: var(--peso-medio);
+}
+
+.voluntario__dados {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--esp-2) var(--esp-4);
+    margin: 0;
+    font-size: var(--fs-sm);
+}
+
+/* e-mail ocupa a linha toda */
+.voluntario__dados > div:first-child {
+    grid-column: 1 / -1;
+}
+
+.voluntario__dados dt {
+    font-size: var(--fs-xs);
+    color: var(--cor-texto-suave);
+}
+
+.voluntario__dados dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.voluntario__mensagem {
+    font-size: var(--fs-sm);
+    font-style: italic;
+    color: var(--cor-texto-suave);
+}
+
+.voluntario__rodape {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: var(--esp-3);
+    border-top: 1px solid #e3e8ee;
+    font-size: var(--fs-xs);
+    color: var(--cor-texto-suave);
+}
+
+.voluntario__remover {
+    padding: 2px var(--esp-3);
+    border: 1px solid transparent;
+    border-radius: var(--raio-pilula);
+    background: none;
+    color: var(--alerta-erro-borda);
+    font: inherit;
+    cursor: pointer;
+}
+
+.voluntario__remover:hover {
+    border-color: var(--alerta-erro-borda);
+}
+
+.vazio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--esp-4);
+    grid-column: 1 / -1;
+    padding: var(--esp-7) var(--esp-4);
+    border: 2px dashed #d5dde6;
+    border-radius: var(--raio-md);
+    color: var(--cor-texto-suave);
     text-align: center;
 }
 
@@ -1307,6 +1653,10 @@ a {
     }
 
     .pilar              { grid-column: 2 / span 10; }
+
+    .menu__lista {
+        gap: var(--esp-5);
+    }
 
     .projetos__imagem   { grid-column: 1 / span 5; }
     .projetos__conteudo { grid-column: 6 / span 7; }
@@ -1468,6 +1818,15 @@ a {
 
     .projetos--pagina {
         padding-top: var(--esp-6);
+    }
+
+    .painel {
+        padding-top: var(--esp-6);
+    }
+
+    .painel__filtros,
+    .voluntario__dados {
+        grid-template-columns: 1fr;
     }
 
     .chamada {
