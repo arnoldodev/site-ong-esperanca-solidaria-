@@ -1,4 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+/* a fonte Poppins é carregada no <head> do HTML (com preconnect), não aqui:
+   @import dentro do CSS atrasa o carregamento porque o navegador só descobre
+   a fonte depois de baixar o CSS */
 
 
 /* 1. variáveis
@@ -146,6 +148,12 @@ body {
 img {
     display: block;
     max-width: 100%;
+    height: auto;
+}
+
+/* <picture> não cria caixa: o <img> continua sendo o item do grid */
+picture {
+    display: contents;
 }
 
 a {

@@ -28,6 +28,23 @@ export function conteudoModalProjeto(projeto) {
     `;
 }
 
+/*
+ * imagem otimizada: WebP em dois tamanhos (480px e original) com JPG de reserva.
+ * - width/height reservam o espaço e evitam o "pulo" do layout (CLS)
+ * - loading="lazy" só baixa a imagem quando ela chega perto da tela
+ * - prioridade: true para a imagem do topo (fetchpriority alto, sem lazy)
+ */
+export const imagemResponsiva = ({ nome, largura, altura, alt, classe = "", prioridade = false }) => html`
+    <picture>
+        <source type="image/webp"
+            srcset="../assets/${nome}-480.webp 480w, ../assets/${nome}.webp ${largura}w"
+            sizes="(max-width: 767px) 90vw, 340px">
+        <img src="../assets/${nome}.jpg" alt="${alt}" width="${largura}" height="${altura}"
+            ${classe && html`class="${classe}"`}
+            ${prioridade ? html`fetchpriority="high"` : html`loading="lazy"`} decoding="async">
+    </picture>
+`;
+
 export const alerta = ({ tipo = "info", titulo, texto }) => html`
     <p class="alerta alerta--${tipo}">
         <span>${titulo && html`<strong class="alerta__titulo">${titulo}</strong>`}${texto}</span>

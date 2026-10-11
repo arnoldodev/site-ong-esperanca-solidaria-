@@ -1,0 +1,17 @@
+{
+  "name": "projeto-ong-esperanca-solidaria",
+  "version": "1.0.0",
+  "description": "SPA da ONG Esperança Solidária: projetos, cadastro de voluntários com validação e localStorage, acessível (WCAG 2.1 AA).",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes http-server . -c-1 -o /html/index.html",
+    "build": "node scripts/build.mjs",
+    "preview": "npx --yes http-server dist -c-1 -o /html/index.html"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  },
+  "author": "Yuri Arnoldo Vieira (arnoldodev)",
+  "license": "MIT"
+}
