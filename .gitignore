@@ -1,0 +1,15 @@
+# dependências do npm (instaladas com npm install)
+node_modules/
+
+# build de produção (gerado com npm run build e publicado pelo GitHub Actions)
+dist/
+
+# arquivos do sistema e do editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/*
+!.vscode/extensions.json
+
+# logs
+npm-debug.log*
