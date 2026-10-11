@@ -3,6 +3,7 @@ import { $ } from "./utils/dom.js";
 import { rota, iniciarRoteador } from "./roteador.js";
 import { iniciarMenu, fecharMenuMobile, marcarLinkAtivo } from "./componentes/menu.js";
 import { iniciarModal, fecharModal } from "./componentes/modal.js";
+import { iniciarAcessibilidade } from "./componentes/acessibilidade.js";
 
 import { inicio } from "./views/inicio.js";
 import { projetos } from "./views/projetos.js";
@@ -18,6 +19,7 @@ rota("/voluntarios", voluntarios);
 
 iniciarMenu();
 iniciarModal();
+iniciarAcessibilidade();
 
 iniciarRoteador({
     elemento: $("#conteudo"),

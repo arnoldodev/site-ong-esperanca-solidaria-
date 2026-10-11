@@ -16,7 +16,7 @@ function pegarArea() {
  * mostrarToast({ tipo: "sucesso" | "erro" | "aviso" | "info", titulo, texto, duracao })
  * duracao em ms; 0 = só fecha no X
  */
-export function mostrarToast({ tipo = "info", titulo, texto = "", duracao = 5000 }) {
+export function mostrarToast({ tipo = "info", titulo, texto = "", duracao = tipo === "erro" ? 9000 : 6000 }) {
     const toast = document.createElement("div");
     toast.className = `toast toast--${tipo}`;
     toast.setAttribute("role", tipo === "erro" ? "alert" : "status");
@@ -49,9 +49,13 @@ export function mostrarToast({ tipo = "info", titulo, texto = "", duracao = 5000
 
     if (duracao > 0) {
         let timer = setTimeout(fechar, duracao);
-        // pausa enquanto o mouse está em cima, pra dar tempo de ler
-        toast.addEventListener("mouseenter", () => clearTimeout(timer));
-        toast.addEventListener("mouseleave", () => (timer = setTimeout(fechar, 2000)));
+        // pausa com o mouse em cima ou com o foco do teclado nele (WCAG 2.2.1 - tempo ajustável)
+        const pausar = () => clearTimeout(timer);
+        const retomar = () => (timer = setTimeout(fechar, 3000));
+        toast.addEventListener("mouseenter", pausar);
+        toast.addEventListener("focusin", pausar);
+        toast.addEventListener("mouseleave", retomar);
+        toast.addEventListener("focusout", retomar);
     }
 
     return fechar;

@@ -11,7 +11,7 @@ export const cardProjeto = (projeto) => html`
         ${badge(projeto)}
         <h3 class="card__titulo">${projeto.nome}</h3>
         <p class="card__texto">${projeto.resumo}</p>
-        <a href="#/projetos/${projeto.id}" class="card__link">Saiba mais</a>
+        <a href="#/projetos/${projeto.id}" class="card__link">Saiba mais<span class="visualmente-oculto"> sobre ${projeto.nome}</span></a>
     </article>
 `;
 

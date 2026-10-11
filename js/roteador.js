@@ -64,8 +64,10 @@ function trocarPagina() {
 
     if (!primeiraCarga) {
         window.scrollTo({ top: 0 });
-        // foco vai pro conteúdo novo (leitor de tela anuncia a página)
+        // foco vai pro conteúdo novo e o leitor de tela anuncia a página
         alvo.focus({ preventScroll: true });
+        const anuncio = document.getElementById("anuncio-rota");
+        if (anuncio) anuncio.textContent = `Página carregada: ${view.titulo}`;
     }
     primeiraCarga = false;
 
@@ -94,7 +96,8 @@ export function iniciarRoteador({ elemento, naoEncontrada, aoMudar }) {
         evento.preventDefault();
         const destino = document.getElementById(href.slice(1));
         if (destino) {
-            destino.scrollIntoView({ behavior: "smooth", block: "start" });
+            const suave = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            destino.scrollIntoView({ behavior: suave ? "smooth" : "auto", block: "start" });
             if (!destino.hasAttribute("tabindex")) destino.setAttribute("tabindex", "-1");
             destino.focus({ preventScroll: true });
         }

@@ -25,6 +25,9 @@ export function iniciarModal() {
     });
 }
 
+// enquanto o modal está aberto, o resto da página fica "inerte" (não recebe foco nem clique)
+const fundoDaPagina = () => $$("body > :not(#modal):not(script)");
+
 export const estaAberto = () => modal?.classList.contains("modal--aberto");
 
 /*
@@ -39,6 +42,7 @@ export function abrirModal(template, { aoFechar } = {}) {
     modal.classList.add("modal--aberto");
     modal.removeAttribute("aria-hidden");
     document.body.classList.add("sem-rolagem");
+    fundoDaPagina().forEach((el) => (el.inert = true));
 
     // foco vai pro primeiro botão/link dentro do modal (o X fica por último na ordem)
     const primeiro = $$(SELETOR_FOCAVEL, corpo)[0] ?? caixa;
@@ -50,6 +54,7 @@ export function fecharModal() {
     modal.classList.remove("modal--aberto");
     modal.setAttribute("aria-hidden", "true");
     document.body.classList.remove("sem-rolagem");
+    fundoDaPagina().forEach((el) => (el.inert = false));
 
     const callback = aoFecharAtual;
     aoFecharAtual = null;

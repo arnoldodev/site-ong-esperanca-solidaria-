@@ -22,8 +22,15 @@
     --cor-campo-foco: #c9d8e4;
 
     /* validação do form */
-    --cor-sucesso: #1f9d55;
-    --cor-erro: #ff7a7a;
+    --cor-sucesso: #0f6b37; /* escurecido: 3,7:1 sobre o campo (WCAG 1.4.11) */
+    --cor-erro: #ffb0b0;    /* clareado: 4,9:1 sobre o fundo azul do form (WCAG 1.4.3) */
+
+    /* foco do teclado: escuro no fundo claro, claro no fundo escuro (WCAG 2.4.7 e 1.4.11) */
+    --cor-foco: var(--cor-primaria-700);
+    --cor-foco-escuro: var(--cor-primaria-300);
+
+    /* bordas de campos e botões em fundo branco (mínimo 3:1) */
+    --cor-borda-controle: #6b7785;
 
     /* badges (fundo / texto) */
     --cor-educacao-bg: #dcecfa;
@@ -148,7 +155,7 @@ a {
 
 /* foco de teclado igual em tudo */
 :focus-visible {
-    outline: 3px solid var(--cor-primaria-300);
+    outline: 3px solid var(--cor-foco);
     outline-offset: 3px;
     border-radius: var(--raio-sm);
 }
@@ -212,7 +219,7 @@ a {
 }
 
 .btn:focus-visible {
-    outline: 3px solid var(--cor-primaria-300);
+    outline: 3px solid var(--cor-foco);
     outline-offset: 3px;
 }
 
@@ -258,7 +265,7 @@ a {
     padding: 2px var(--esp-5);
     border-radius: var(--raio-pilula);
     background: var(--cor-campo);
-    color: var(--cor-primaria-700);
+    color: var(--cor-primaria-900); /* 700 dava 3,9:1, o 900 dá 6,5:1 */
     font-weight: var(--peso-forte);
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -486,21 +493,17 @@ a {
     color: var(--cor-primaria-900);
 }
 
-/* checkbox escondido, mas ainda pega o Tab */
-.cabecalho__toggle {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-}
-
-/* hambúrguer, só aparece no mobile */
+/* hambúrguer: um <button> com aria-expanded (o JS troca true/false), só aparece no mobile */
 .cabecalho__hamburguer {
     display: none;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     align-items: center;
     justify-content: center;
+    padding: 0;
+    border: none;
     border-radius: var(--raio-sm);
+    background: none;
     cursor: pointer;
 }
 
@@ -530,21 +533,16 @@ a {
 .cabecalho__hamburguer span::after  { top: 7px; }
 
 /* aberto: as 3 linhas viram um X */
-.cabecalho__toggle:checked + .cabecalho__hamburguer span {
+.cabecalho__hamburguer[aria-expanded="true"] span {
     background: transparent;
 }
 
-.cabecalho__toggle:checked + .cabecalho__hamburguer span::before {
+.cabecalho__hamburguer[aria-expanded="true"] span::before {
     transform: translateY(7px) rotate(45deg);
 }
 
-.cabecalho__toggle:checked + .cabecalho__hamburguer span::after {
+.cabecalho__hamburguer[aria-expanded="true"] span::after {
     transform: translateY(-7px) rotate(-45deg);
-}
-
-.cabecalho__toggle:focus-visible + .cabecalho__hamburguer {
-    outline: 3px solid var(--cor-primaria-300);
-    outline-offset: 2px;
 }
 
 /* menu desktop */
@@ -963,7 +961,7 @@ a {
 
 /* foco no link marca o card todo */
 .card:has(.card__link:focus-visible) {
-    outline: 3px solid var(--cor-primaria-300);
+    outline: 3px solid var(--cor-foco);
     outline-offset: 2px;
 }
 
@@ -1107,7 +1105,7 @@ a {
     font-weight: var(--peso-forte);
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: #7fb7e6;
+    color: #a9d1f2; /* 5,3:1 no fundo do form */
 }
 
 /* select com setinha própria */
@@ -1187,7 +1185,7 @@ a {
    só depois que a pessoa sai do campo ou tenta enviar */
 .form__input.campo--valido {
     border-color: var(--cor-sucesso);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231f9d55' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f6b37' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E");
 }
 
 /* textarea é opcional, não precisa de check */
@@ -1320,7 +1318,7 @@ button.modal__fechar {
 }
 
 .btn--neutro {
-    border-color: var(--cor-linha);
+    border-color: var(--cor-borda-controle);
     background: var(--cor-superficie);
 }
 
@@ -1367,7 +1365,7 @@ button.modal__fechar {
     display: block;
     margin: var(--esp-1) 0 0 24px;
     font-size: var(--fs-xs);
-    color: #9fc3e2;
+    color: #b7d6ef;
 }
 
 .form__contador {
@@ -1403,7 +1401,7 @@ button.modal__fechar {
 
 .filtro {
     padding: var(--esp-1) var(--esp-4);
-    border: 1px solid var(--cor-linha);
+    border: 1px solid var(--cor-borda-controle);
     border-radius: var(--raio-pilula);
     background: var(--cor-superficie);
     color: var(--cor-texto-suave);
@@ -1482,7 +1480,7 @@ button.modal__fechar {
 .painel__campo input,
 .painel__campo select {
     padding: var(--esp-2) var(--esp-4);
-    border: 1px solid var(--cor-linha);
+    border: 1px solid var(--cor-borda-controle);
     border-radius: var(--raio-pilula);
     background: var(--cor-superficie);
     color: var(--cor-texto);
@@ -1596,6 +1594,202 @@ button.modal__fechar {
 }
 
 
+
+/* 11.2 acessibilidade (WCAG 2.1 AA) */
+
+/* em fundo escuro o anel de foco fica claro */
+.cadastro,
+.chamada,
+.rodape,
+.impacto {
+    --cor-foco: var(--cor-foco-escuro);
+}
+
+/* barra de acessibilidade no topo */
+.acessibilidade {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--esp-2);
+    padding: var(--esp-1) var(--gutter);
+    background: var(--cor-primaria-900);
+    color: var(--cor-branco);
+    font-size: var(--fs-xs);
+}
+
+.acessibilidade__titulo {
+    margin-right: var(--esp-1);
+    font-weight: var(--peso-medio);
+}
+
+.acessibilidade__botao {
+    min-width: 32px;
+    min-height: 28px;
+    padding: 2px var(--esp-2);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: var(--raio-sm);
+    background: transparent;
+    color: var(--cor-branco);
+    font: inherit;
+    font-weight: var(--peso-medio);
+    cursor: pointer;
+}
+
+.acessibilidade__botao:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.acessibilidade__botao[aria-pressed="true"] {
+    background: var(--cor-branco);
+    color: var(--cor-primaria-900);
+}
+
+.acessibilidade {
+    --cor-foco: var(--cor-foco-escuro);
+}
+
+/* tamanho da fonte escolhido na barra (a maioria das fontes do site usa rem) */
+html[data-fonte="1"] { font-size: 112.5%; }
+html[data-fonte="2"] { font-size: 125%; }
+html[data-fonte="3"] { font-size: 137.5%; }
+
+/* alvo de toque maior nos links do rodapé do card e botões pequenos */
+.voluntario__remover {
+    min-height: 32px;
+}
+
+/* ---------- modo alto contraste ----------
+   fundo preto, texto branco, links e foco em amarelo (contraste acima de 15:1) */
+html.alto-contraste {
+    --cor-primaria-900: #ffe600;
+    --cor-primaria-700: #ffe600;
+    --cor-primaria-500: #ffe600;
+    --cor-primaria-300: #ffe600;
+    --cor-navy: #ffffff;
+    --cor-texto: #ffffff;
+    --cor-texto-suave: #ffffff;
+    --cor-superficie: #000000;
+    --cor-campo: #000000;
+    --cor-campo-foco: #1a1a1a;
+    --cor-erro: #ff9e9e;
+    --cor-sucesso: #7dff9c;
+    --cor-foco: #ffe600;
+    --cor-foco-escuro: #ffe600;
+    --cor-borda-controle: #ffffff;
+    --degrade-impacto: #000000;
+    --degrade-cadastro: #000000;
+    --degrade-rodape: #000000;
+    --sombra-card: none;
+    --sombra-modal: none;
+    --sombra-cadastro: none;
+}
+
+html.alto-contraste body {
+    background: #000000;
+    color: #ffffff;
+}
+
+html.alto-contraste a:not(.btn) {
+    color: #ffe600;
+    text-decoration: underline;
+}
+
+html.alto-contraste .card,
+html.alto-contraste .voluntario,
+html.alto-contraste .modal__caixa,
+html.alto-contraste .cadastro,
+html.alto-contraste .chamada,
+html.alto-contraste .toast,
+html.alto-contraste .alerta,
+html.alto-contraste .submenu,
+html.alto-contraste .impacto,
+html.alto-contraste .rodape,
+html.alto-contraste .painel__campo input,
+html.alto-contraste .painel__campo select {
+    border: 2px solid #ffffff;
+    background: #000000;
+    color: #ffffff;
+}
+
+html.alto-contraste .badge,
+html.alto-contraste .etiqueta,
+html.alto-contraste .filtro {
+    border: 1px solid #ffffff;
+    background: #000000;
+    color: #ffffff;
+}
+
+html.alto-contraste .filtro[aria-pressed="true"],
+html.alto-contraste .acessibilidade__botao[aria-pressed="true"] {
+    background: #ffe600;
+    color: #000000;
+}
+
+html.alto-contraste .btn {
+    border: 2px solid #ffe600;
+    background: #000000;
+    color: #ffe600;
+}
+
+html.alto-contraste .btn:hover:not(:disabled) {
+    background: #ffe600;
+    color: #000000;
+}
+
+html.alto-contraste .acessibilidade {
+    border-bottom: 2px solid #ffffff;
+    background: #000000;
+}
+
+html.alto-contraste .form__input {
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+html.alto-contraste .form__rotulo,
+html.alto-contraste .form__input:focus + .form__rotulo,
+html.alto-contraste .form__input:not(:placeholder-shown) + .form__rotulo,
+html.alto-contraste .form__legenda,
+html.alto-contraste .form__dica,
+html.alto-contraste .form__contador,
+html.alto-contraste .cadastro__intro,
+html.alto-contraste .chamada__texto {
+    color: #ffffff;
+}
+
+html.alto-contraste .form__input.campo--valido {
+    border-color: var(--cor-sucesso);
+}
+
+html.alto-contraste .form__input.campo--invalido {
+    border-color: var(--cor-erro);
+}
+
+html.alto-contraste .sobre__figura::before,
+html.alto-contraste .sobre::after {
+    display: none;
+}
+
+html.alto-contraste img {
+    filter: grayscale(1) contrast(1.2);
+}
+
+html.alto-contraste .menu {
+    background: #000000;
+}
+
+html.alto-contraste .cabecalho__hamburguer span,
+html.alto-contraste .cabecalho__hamburguer span::before,
+html.alto-contraste .cabecalho__hamburguer span::after {
+    background: #ffffff;
+}
+
+html.alto-contraste .cabecalho__hamburguer[aria-expanded="true"] span {
+    background: transparent;
+}
+
+
 /* 12. responsivo
    desktop-first: a base é o desktop (1280 a 1439px)
    1440+   telas grandes
@@ -1686,7 +1880,7 @@ button.modal__fechar {
         transition: max-height 0.35s ease, visibility 0s linear 0.35s;
     }
 
-    .cabecalho__toggle:checked ~ .menu {
+    .cabecalho__hamburguer[aria-expanded="true"] ~ .menu {
         max-height: 500px;
         visibility: visible;
         transition: max-height 0.35s ease, visibility 0s;

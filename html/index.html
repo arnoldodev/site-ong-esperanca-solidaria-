@@ -4,7 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ONG Esperança Solidária</title>
+    <meta name="description" content="ONG Esperança Solidária: projetos de educação, alimentação, meio ambiente e saúde. Cadastre-se como voluntário.">
+    <meta name="theme-color" content="#0a3a6b">
+    <link rel="icon" type="image/png" href="../assets/logo.png">
     <link rel="stylesheet" href="../css/style.css">
+    <!-- aplica fonte/contraste salvos antes de desenhar a página, pra não "piscar" -->
+    <script>
+        try {
+            const pref = JSON.parse(localStorage.getItem("ong:preferencias")) || {};
+            if (pref.contraste) document.documentElement.classList.add("alto-contraste");
+            if (pref.fonte) document.documentElement.dataset.fonte = pref.fonte;
+        } catch (erro) { /* sem localStorage, segue o padrão */ }
+    </script>
     <!-- type="module" permite separar o JS em arquivos com import/export -->
     <script type="module" src="../js/main.js"></script>
 </head>
@@ -12,17 +23,25 @@
 
     <a href="#conteudo" class="pular-link">Pular para o conteúdo</a>
 
+    <!-- opções de acessibilidade (js/componentes/acessibilidade.js), ficam salvas no localStorage -->
+    <div class="acessibilidade" role="region" aria-label="Opções de acessibilidade">
+        <span class="acessibilidade__titulo" aria-hidden="true">Acessibilidade:</span>
+        <button type="button" class="acessibilidade__botao" data-fonte="diminuir">A-<span class="visualmente-oculto"> (diminuir texto)</span></button>
+        <button type="button" class="acessibilidade__botao" data-fonte="padrao">A<span class="visualmente-oculto"> (tamanho padrão do texto)</span></button>
+        <button type="button" class="acessibilidade__botao" data-fonte="aumentar">A+<span class="visualmente-oculto"> (aumentar texto)</span></button>
+        <button type="button" class="acessibilidade__botao" data-contraste aria-pressed="false">Alto contraste</button>
+    </div>
+
     <!-- cabeçalho fixo: só o <main> troca quando muda de página -->
     <header class="cabecalho">
         <h1 class="cabecalho__logo"><a href="#/">ONG Esperança Solidária</a></h1>
 
-        <!-- menu mobile: o checkbox abre e fecha -->
-        <input type="checkbox" id="menu-toggle" class="cabecalho__toggle">
-        <label for="menu-toggle" class="cabecalho__hamburguer" aria-label="Abrir menu de navegação">
-            <span></span>
-        </label>
+        <!-- menu mobile: botão com aria-expanded avisa o leitor de tela se o menu está aberto -->
+        <button type="button" class="cabecalho__hamburguer" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menu de navegação">
+            <span aria-hidden="true"></span>
+        </button>
 
-        <nav class="menu" aria-label="Navegação principal">
+        <nav class="menu" id="menu-principal" aria-label="Navegação principal">
             <ul class="menu__lista">
                 <li class="menu__item"><a href="#/" class="menu__link" data-rota="/">Início</a></li>
                 <li class="menu__item menu__item--submenu">
@@ -44,6 +63,9 @@
             o JavaScript usa módulos e o navegador bloqueia módulos abertos direto do arquivo.
         </p>
     </main>
+
+    <!-- leitor de tela anuncia a troca de página da SPA (WCAG 4.1.3) -->
+    <p id="anuncio-rota" class="visualmente-oculto" aria-live="polite" aria-atomic="true"></p>
 
     <noscript>
         <p class="aviso-carregando">Este site precisa do JavaScript ativado.</p>
