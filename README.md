@@ -1,113 +1,173 @@
-# Projeto Acadêmico - Website ONG Esperança Solidária
+# ONG Esperança Solidária
 
-Este repositório contém o projeto desenvolvido para fins de estudo universitário, focado em **HTML5 semântico**, **CSS3**, **JavaScript**, acessibilidade e validação de formulários.
+Site da ONG Esperança Solidária: apresenta a organização e seus projetos e permite que pessoas se cadastrem como voluntárias. É uma **Single Page Application** feita com HTML, CSS e JavaScript puro, acessível (**WCAG 2.1 nível AA**) e publicada no **GitHub Pages**.
 
----
+**Site no ar:** https://arnoldodev.github.io/projeto-ong-esperanca-solidaria/
 
-## Contexto Acadêmico
-* **Objetivo:** Projeto prático de Desenvolvimento Front-end para a faculdade.
-* **Experiência Prática I:** HTML5 semântico e formulários nativos.
-* **Experiência Prática II:** CSS3 (variáveis, Flexbox, Grid e responsividade) e acessibilidade (WCAG).
-* **Experiência Prática III:** JavaScript — o site virou uma **SPA** (Single Page Application) com rotas, templates, validação e localStorage.
+> Projeto acadêmico da disciplina de Desenvolvimento Front-end, construído em quatro Experiências Práticas.
 
 ---
 
-## Estrutura do Projeto
+## Sumário
 
-```text
-Site ONG/
-├── assets/                  # Imagens
-├── css/style.css            # Estilos (seção 11.1 = estados controlados pelo JS)
-├── html/
-│   ├── index.html           # Única página: cabeçalho, <main> vazio, modal e rodapé
-│   └── componentes.html     # Guia visual dos componentes
-└── js/
-    ├── main.js              # Ponto de entrada: registra as rotas e liga tudo
-    ├── roteador.js          # Lê o # da URL e troca o conteúdo do <main>
-    ├── utils/dom.js         # Template tag html`...`, $, $$, debounce
-    ├── dados/projetos.js    # Dados dos projetos (cards, modais, submenu e select saem daqui)
-    ├── servicos/
-    │   ├── armazenamento.js # Tudo que mexe com localStorage
-    │   └── cep.js           # Consulta de CEP na API ViaCEP
-    ├── componentes/
-    │   ├── templates.js     # Pedaços de HTML reaproveitáveis (card, badge, alerta...)
-    │   ├── menu.js          # Submenu, link ativo e menu mobile
-    │   ├── modal.js         # Modal reutilizável + confirmação
-    │   ├── toast.js         # Notificações
-    │   ├── validacao.js     # Regras de validação e máscaras (CPF, telefone, CEP)
-    │   └── formulario.js    # Comportamento do formulário de cadastro
-    └── views/               # Uma "página" por arquivo
-        ├── inicio.js
-        ├── projetos.js
-        ├── cadastro.js
-        ├── voluntarios.js
-        └── naoEncontrada.js
+- [Funcionalidades](#funcionalidades)
+- [Tecnologias](#tecnologias)
+- [Como rodar](#como-rodar)
+- [Estrutura de pastas](#estrutura-de-pastas)
+- [Arquitetura do JavaScript](#arquitetura-do-javascript)
+- [Acessibilidade](#acessibilidade)
+- [Performance e build](#performance-e-build)
+- [Deploy](#deploy)
+- [Fluxo de trabalho com Git](#fluxo-de-trabalho-com-git)
+- [Histórico do projeto](#histórico-do-projeto)
+- [Autor e licença](#autor-e-licença)
+
+---
+
+## Funcionalidades
+
+- **Navegação SPA:** as páginas trocam sem recarregar (`#/`, `#/projetos`, `#/cadastro`, `#/voluntarios`), com botão voltar funcionando e página 404
+- **Projetos:** filtro por categoria e modal de detalhes com link direto (`#/projetos/verde-urbano`)
+- **Cadastro de voluntário:** validação em tempo real, máscaras (CPF, telefone, CEP), cálculo dos dígitos do CPF, busca de cidade pelo CEP (API ViaCEP), bloqueio de CPF/e-mail repetido e rascunho automático
+- **Voluntários:** lista dos cadastros salvos no navegador, com busca, filtro e remoção
+- **Acessibilidade:** barra com aumento de texto e modo alto contraste, navegação completa pelo teclado e suporte a leitor de tela
+
+## Tecnologias
+
+| Área | Tecnologia |
+| --- | --- |
+| Estrutura | HTML5 semântico |
+| Estilo | CSS3 (variáveis, Grid, Flexbox, 5 breakpoints, BEM) |
+| Comportamento | JavaScript ES2020 com módulos nativos (`import`/`export`), sem framework |
+| Dados | `localStorage` + API pública [ViaCEP](https://viacep.com.br) |
+| Build | [esbuild](https://esbuild.github.io) (bundle e minificação) |
+| Deploy | GitHub Actions + GitHub Pages |
+| Qualidade | axe-core (acessibilidade) e Lighthouse (performance) |
+
+## Como rodar
+
+**Pré-requisito:** [Node.js](https://nodejs.org) 18 ou superior (só para o build; para editar, basta o VS Code).
+
+```bash
+git clone https://github.com/arnoldodev/projeto-ong-esperanca-solidaria.git
+cd projeto-ong-esperanca-solidaria
+npm install
 ```
 
----
-
-## Como abrir
-
-O JavaScript usa **módulos** (`import` / `export`), e o navegador bloqueia módulos abertos direto do arquivo (`file://`).
-Por isso, abra com a extensão **Live Server** do VS Code: clique com o botão direito em `html/index.html` → *Open with Live Server*.
-
----
-
-## Rotas da SPA
-
-| Endereço | Página |
+| Comando | O que faz |
 | --- | --- |
-| `#/` | Início |
-| `#/projetos` | Projetos, com filtro por categoria |
-| `#/projetos/verde-urbano` | Projetos com o modal do projeto aberto |
-| `#/cadastro` | Formulário de cadastro |
-| `#/cadastro?projeto=verde-urbano` | Formulário já com o projeto escolhido |
-| `#/voluntarios` | Lista de voluntários salvos no localStorage |
-| qualquer outro | Página 404 |
+| `npm run dev` | Abre a versão de desenvolvimento (arquivos originais) em um servidor local |
+| `npm run build` | Gera a versão de produção minificada na pasta `dist/` |
+| `npm run preview` | Abre a versão de produção (`dist/`) para conferir antes de publicar |
 
----
+Sem Node.js: abra `html/index.html` com a extensão **Live Server** do VS Code.
 
-## O que foi feito no JavaScript
+> Abrir o arquivo com dois cliques (`file://`) não funciona: o navegador bloqueia módulos JavaScript fora de um servidor.
 
-**SPA e navegação**
-* Roteador próprio com `hashchange`: troca só o `<main>`, sem recarregar a página
-* Rotas com parâmetro (`/projetos/:id`) e query string (`?projeto=`)
-* Link ativo marcado no menu, título da aba atualizado, menu mobile fecha ao navegar
-* Botão voltar/avançar do navegador funciona
-* Foco vai para o conteúdo novo (acessibilidade)
+## Estrutura de pastas
 
-**Templates**
-* Template tag `` html`...` `` que escapa o que vem nas `${}` (evita injeção de HTML)
-* Cards, modais, submenu e opções do select gerados a partir de `dados/projetos.js`
+```text
+├── .github/workflows/deploy.yml   # build + publicação automática no GitHub Pages
+├── assets/                        # imagens (JPG original + WebP otimizado) e ícones
+├── css/style.css                  # todos os estilos, organizados em seções numeradas
+├── docs/ACESSIBILIDADE.md         # checklist WCAG 2.1 AA do projeto
+├── html/
+│   ├── index.html                 # "esqueleto" da SPA: cabeçalho, <main>, modal e rodapé
+│   └── componentes.html           # guia visual dos componentes
+├── js/
+│   ├── main.js                    # ponto de entrada: registra rotas e inicia os componentes
+│   ├── roteador.js                # troca as telas pelo # da URL
+│   ├── utils/dom.js               # sistema de templates html`...` e helpers
+│   ├── dados/projetos.js          # dados dos projetos
+│   ├── servicos/                  # localStorage e API de CEP
+│   ├── componentes/               # menu, modal, toast, formulário, validação, acessibilidade
+│   └── views/                     # uma tela por arquivo
+├── scripts/build.mjs              # build de produção
+├── CHANGELOG.md · CONTRIBUTING.md · LICENSE
+└── package.json
+```
 
-**Manipulação do DOM e eventos**
-* Modal controlado por JS: Esc fecha, foco preso dentro, foco volta ao fechar
-* Toasts que somem sozinhos (pausam com o mouse em cima)
-* Filtro de projetos por categoria e busca de voluntários por nome
-* Contadores animados na seção de impacto (`IntersectionObserver`)
-* Delegação de eventos (um listener no form / na lista serve para todos os itens)
+## Arquitetura do JavaScript
 
-**Validação do formulário**
-* Mensagem de erro específica por campo, aparece depois que a pessoa sai do campo
-* CPF com cálculo dos dígitos verificadores
-* Máscaras de CPF, telefone e CEP enquanto digita
-* Consulta do CEP na API ViaCEP (mostra bairro e cidade)
-* CPF e e-mail não podem se repetir
-* Contador de caracteres na mensagem
-* Botão em estado "Enviando..." durante o envio simulado
+```text
+main.js ──> roteador.js ──> views/*.js ──> componentes/*.js ──> servicos/*.js
+                                   │                                  │
+                                   └──────> dados/projetos.js         └──> localStorage / ViaCEP
+```
 
-**localStorage**
-* Voluntários cadastrados ficam salvos e aparecem em `#/voluntarios` (com remoção)
-* Rascunho automático: se sair da página no meio do cadastro, os dados voltam
-* O número de "Voluntários Ativos" na home soma os cadastros feitos
+- **Roteador:** escuta `hashchange`, encontra a view da rota e desenha no `<main>`. Rotas aceitam parâmetros (`/projetos/:id`) e query string (`?projeto=`).
+- **Views:** cada tela exporta `{ titulo, render(), montar(), atualizar() }`. `render` devolve o HTML; `montar` liga os eventos.
+- **Templates:** a tag `` html`...` `` escapa tudo que vem nas `${}`, evitando injeção de HTML com dados digitados pelo usuário.
+- **Serviços:** só `servicos/armazenamento.js` acessa o `localStorage` e só `servicos/cep.js` acessa a rede. Trocar por um back-end real mexe só nesses arquivos.
 
----
+Chaves usadas no `localStorage`: `ong:voluntarios`, `ong:rascunho-cadastro` e `ong:preferencias`.
 
-## Como testar
+## Acessibilidade
 
-1. Navegue pelo menu e use os botões voltar/avançar do navegador
-2. Em Projetos, use os filtros e abra um projeto → "Quero participar"
-3. Tente enviar o cadastro vazio, depois com CPF errado (ex: `529.982.247-26`) e certo (ex: `529.982.247-25`)
-4. Preencha metade do formulário e recarregue a página (rascunho volta)
-5. Envie e veja o cadastro em Voluntários; tente cadastrar o mesmo e-mail de novo
-6. DevTools → Application → Local Storage para ver os dados salvos
+Meta: **WCAG 2.1 nível AA**. Resultado da auditoria com axe-core em todas as rotas e estados (modal aberto, formulário com erro, menu mobile, alto contraste): **0 violações**. Lighthouse Acessibilidade: **100**.
+
+Principais recursos:
+
+- Navegação 100% pelo teclado, com link "Pular para o conteúdo" e foco visível em todo elemento
+- Contraste mínimo de 4,5:1 em textos e 3:1 em bordas e ícones
+- Modo **alto contraste** e **aumento de texto** até 137,5%, salvos entre visitas
+- Menu mobile com `aria-expanded`, modal com foco preso e resto da página `inert`
+- Erros do formulário ligados aos campos por `aria-describedby` e `aria-invalid`
+- Troca de página anunciada para leitores de tela (`aria-live`)
+- Respeita `prefers-reduced-motion` e `prefers-contrast`
+
+Detalhes de cada critério em [docs/ACESSIBILIDADE.md](docs/ACESSIBILIDADE.md).
+
+## Performance e build
+
+O `npm run build` gera a pasta `dist/` pronta para produção:
+
+| Item | Desenvolvimento | Produção |
+| --- | --- | --- |
+| JavaScript | 18 arquivos, 59,5 KB | 1 arquivo, 32,4 KB (11 KB com gzip) |
+| CSS | 46,2 KB | 32,8 KB (7 KB com gzip) |
+| Requisições na página inicial | 25 | 8 |
+| Lighthouse Desempenho (mobile, medido localmente) | 94 | 98 |
+
+Outras otimizações:
+
+- Imagens em **WebP** com dois tamanhos (`srcset`) e JPG de reserva, `width`/`height` definidos (CLS = 0) e `loading="lazy"` fora da primeira tela
+- Fonte carregada com `preconnect` e `display=swap`
+- Arquivos com `?v=hash` no HTML, para o navegador baixar de novo só quando mudam
+- Favicon de 3 KB no lugar do logo de 75 KB
+
+## Deploy
+
+O site é publicado automaticamente pelo workflow [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml):
+
+1. Um push na branch `main` dispara o GitHub Actions
+2. O workflow roda `npm ci` e `npm run build`
+3. A pasta `dist/` é publicada no GitHub Pages
+
+**Configuração (uma vez só):** no repositório, abra **Settings → Pages** e, em **Source**, escolha **GitHub Actions**. O andamento de cada publicação aparece na aba **Actions**.
+
+## Fluxo de trabalho com Git
+
+- `main` sempre estável: é o que vai para o ar
+- Cada mudança nasce em uma branch com prefixo (`feature/`, `fix/`, `docs/`, `ci/`, `chore/`) e volta para a `main` por merge
+- Mensagens no padrão **Conventional Commits** (`feat:`, `fix:`, `perf:`, `docs:`, `ci:`, `chore:`)
+- Versões marcadas com tags (`v1.0.0`) seguindo **Versionamento Semântico**
+
+Regras completas em [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Histórico do projeto
+
+| Versão | Experiência Prática | Entrega |
+| --- | --- | --- |
+| 0.1.0 | I | HTML5 semântico e formulário com validação nativa |
+| 0.2.0 | II | CSS3: design system, grid de 12 colunas e responsividade |
+| 0.3.0 | III | JavaScript: SPA, templates, validação e localStorage |
+| 1.0.0 | IV | Git profissional, WCAG 2.1 AA, build de produção e deploy |
+
+Mudanças detalhadas em [CHANGELOG.md](CHANGELOG.md).
+
+## Autor e licença
+
+Desenvolvido por **Yuri Arnoldo Vieira** ([@arnoldodev](https://github.com/arnoldodev)).
+
+Código sob a licença [MIT](LICENSE). As fotos são usadas apenas para fins acadêmicos.
