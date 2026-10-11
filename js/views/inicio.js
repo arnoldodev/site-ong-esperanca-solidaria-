@@ -1,7 +1,7 @@
 // página inicial
 import { html, $$, prefereMenosMovimento } from "../utils/dom.js";
 import { projetos, impacto } from "../dados/projetos.js";
-import { cardProjeto } from "../componentes/templates.js";
+import { cardProjeto, imagemResponsiva } from "../componentes/templates.js";
 import { voluntarios } from "../servicos/armazenamento.js";
 
 const formatar = (numero) => numero.toLocaleString("pt-BR");
@@ -20,7 +20,12 @@ export const inicio = {
                     <a href="#/cadastro" class="btn btn--contorno">Seja Voluntário</a>
                 </div>
                 <figure class="sobre__figura">
-                    <img src="../assets/voluntarios-acao.jpg" alt="Voluntária da ONG sorrindo abraçada a três jovens de bonés azuis em frente à placa de um parque.">
+                    ${imagemResponsiva({
+                        nome: "voluntarios-acao",
+                        largura: 960, altura: 730,
+                        alt: "Voluntária da ONG sorrindo abraçada a três jovens de bonés azuis em frente à placa de um parque.",
+                        prioridade: true, // aparece logo no topo: carrega antes de tudo
+                    })}
                 </figure>
             </section>
 
@@ -61,7 +66,12 @@ export const inicio = {
             </section>
 
             <section id="projetos" class="projetos">
-                <img class="projetos__imagem" src="../assets/voluntarios2.jpg" alt="Equipe de voluntários com coletes azuis e máscaras reunida em uma sala.">
+                ${imagemResponsiva({
+                    nome: "voluntarios2",
+                    largura: 900, altura: 506,
+                    alt: "Equipe de voluntários com coletes azuis e máscaras reunida em uma sala.",
+                    classe: "projetos__imagem",
+                })}
                 <div class="projetos__conteudo">
                     <h2 class="projetos__titulo">Nossas Iniciativas</h2>
                     <p class="projetos__subtitulo">Confira abaixo os nossos projetos</p>
