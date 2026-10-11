@@ -8,9 +8,20 @@ export function iniciarMenu() {
         <li><a href="#/projetos/${p.id}" class="submenu__link">${p.nome}</a></li>
     `));
 
-    // Esc fecha o menu mobile
+    // botão hambúrguer abre/fecha e avisa o estado pelo aria-expanded
+    const botao = $(".cabecalho__hamburguer");
+    botao.addEventListener("click", () => {
+        const abrir = botao.getAttribute("aria-expanded") !== "true";
+        definirMenuAberto(abrir);
+        if (abrir) $(".menu__link").focus();
+    });
+
+    // Esc fecha o menu mobile e devolve o foco pro botão
     document.addEventListener("keydown", (evento) => {
-        if (evento.key === "Escape") fecharMenuMobile();
+        if (evento.key === "Escape" && menuAberto()) {
+            fecharMenuMobile();
+            botao.focus();
+        }
     });
 
     // clicou fora do cabeçalho com o menu aberto -> fecha
@@ -19,9 +30,17 @@ export function iniciarMenu() {
     });
 }
 
+const menuAberto = () => $(".cabecalho__hamburguer")?.getAttribute("aria-expanded") === "true";
+
+function definirMenuAberto(aberto) {
+    const botao = $(".cabecalho__hamburguer");
+    if (!botao) return;
+    botao.setAttribute("aria-expanded", String(aberto));
+    botao.setAttribute("aria-label", aberto ? "Fechar menu de navegação" : "Abrir menu de navegação");
+}
+
 export function fecharMenuMobile() {
-    const toggle = $("#menu-toggle");
-    if (toggle) toggle.checked = false;
+    definirMenuAberto(false);
 }
 
 // aria-current="page" no link da rota atual (o CSS já pinta esse estado)

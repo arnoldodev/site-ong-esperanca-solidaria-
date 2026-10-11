@@ -4,6 +4,7 @@
 const CHAVES = {
     voluntarios: "ong:voluntarios",
     rascunho: "ong:rascunho-cadastro",
+    preferencias: "ong:preferencias",
 };
 
 // try/catch porque o localStorage pode estar bloqueado (aba anônima, cota cheia...)
@@ -62,6 +63,12 @@ export const voluntarios = {
         const lista = this.listar();
         return projeto ? lista.filter((v) => v.projeto === projeto).length : lista.length;
     },
+};
+
+// preferências de acessibilidade: { fonte: 0..3, contraste: true/false }
+export const preferencias = {
+    ler: () => ler(CHAVES.preferencias, { fonte: 0, contraste: false }),
+    salvar: (dados) => gravar(CHAVES.preferencias, dados),
 };
 
 // o que a pessoa já digitou no formulário, pra não perder se sair da página

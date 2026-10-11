@@ -92,7 +92,7 @@ export const cadastro = {
             <div class="pagina-cadastro">
                 <section class="cadastro">
                     <h2 class="cadastro__titulo">Junte-se a Nós: Seja um Colaborador</h2>
-                    <p class="cadastro__intro">Preencha os campos abaixo para registrar seu interesse em fazer parte das nossas ações.</p>
+                    <p class="cadastro__intro">Preencha os campos abaixo para registrar seu interesse em fazer parte das nossas ações. Campos marcados com * são obrigatórios.</p>
                     <div class="cadastro__area">${formulario()}</div>
                 </section>
             </div>
