@@ -1,0 +1,57 @@
+# Publica o site no GitHub Pages a cada push na main.
+# Antes de publicar, roda o build de produção (npm run build) e envia só a pasta dist/.
+# Configuração única no GitHub: Settings > Pages > Source: "GitHub Actions".
+name: Deploy no GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # permite rodar na mão pela aba Actions
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# só um deploy por vez; se chegar outro push, o que está na fila é cancelado
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixa o código
+        uses: actions/checkout@v4
+
+      - name: Instala o Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instala as dependências
+        run: npm ci
+
+      - name: Gera o build de produção
+        run: npm run build
+
+      - name: Prepara o GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Envia a pasta dist
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publica
+        id: deployment
+        uses: actions/deploy-pages@v4
