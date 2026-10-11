@@ -4,6 +4,11 @@ Todas as mudanças importantes do projeto ficam registradas aqui.
 
 O formato segue o [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e o projeto usa [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.0.1] - 2026-10-11
+
+### Corrigido
+- Seta do campo de projeto invisível no modo alto contraste (#5)
+
 ## [1.0.0] - 2026-10-11 · Experiência Prática IV
 
 ### Adicionado
