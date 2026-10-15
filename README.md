@@ -2,7 +2,7 @@
 
 Site da ONG Esperança Solidária: apresenta a organização e seus projetos e permite que pessoas se cadastrem como voluntárias. É uma **Single Page Application** feita com HTML, CSS e JavaScript puro, acessível (**WCAG 2.1 nível AA**) e publicada no **GitHub Pages**.
 
-**Site no ar:** https://arnoldodev.github.io/projeto-ong-esperanca-solidaria/
+**Site no ar:** https://arnoldodev.github.io/site-ong-esperanca-solidaria-/
 
 > Projeto acadêmico da disciplina de Desenvolvimento Front-end, construído em quatro Experiências Práticas.
 
